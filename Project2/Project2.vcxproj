@@ -28,6 +28,7 @@
   <ItemGroup>
     <ClInclude Include="reading.h" />
     <ClInclude Include="seatingGen.h" />
+    <ClInclude Include="sort.h" />
     <ClInclude Include="writing.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 
 bool assignSeat(char* targetFile);// assignes a seat
 
