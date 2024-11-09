@@ -26,7 +26,7 @@ int compLast(const void* elem1, const void* elem2)
 }
 
 // will sort the first or last names of the occupants in alphabetical or the reverse of that
-bool sortNames(char* targetFile) {
+bool sortNames(SEATASSIGNMENT* seating) {
 	bool sortByFirstName;
 	bool sortByAscending;
 	// Pick between sorting by first name or last name
@@ -63,17 +63,6 @@ bool sortNames(char* targetFile) {
 			sortByAscending = false;
 			break;
 		}
-	}
-	FILE* source = fopen(targetFile, "rb");
-	SEATASSIGNMENT seating[MAXSEATS];
-	//should the file not exist
-
-	if (source == NULL) {
-		ioError(targetFile);
-		return 0;
-	}
-	for (int i = 0; i < MAXSEATS; ++i) {
-		fread(&seating[i], sizeof(SEATASSIGNMENT), 1, source); // Pulls the information for that seat
 	}
 	SEATASSIGNMENT seatingClone[MAXSEATS];
 	memcpy(seatingClone, seating, sizeof(SEATASSIGNMENT) * MAXSEATS);

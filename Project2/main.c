@@ -25,31 +25,27 @@ void interface() {
 
 // Switch case that will read the input and activate the matching function
 bool interfaceInput(char input[1], SEATASSIGNMENT* seatingPlan) {
-	printf("%d\n", seatingPlan[0].assigned);
-	printf("%d\n", seatingPlan[1].assigned);
-	printf("%d\n", seatingPlan[2].assigned);
-	printf("%d\n", seatingPlan[3].assigned);
-	printf("%d\n", seatingPlan[4].assigned);
 	char inputValue = *input; // Converts the input into an int so I can use a switch case
 	// switch case to select function
 	switch (inputValue)
 	{
 	case 'a': // a) Show number of empty seats
-		emptySeatsTotal(TARGETFILE);
+		emptySeatsTotal(seatingPlan);
 		return 1;
 	case 'b': // b) Show list of empty seats
 		emptySeatsList(seatingPlan);
 		return 1;
 	case 'c': // c) Show alphabetical list(by passenger name) of seats
-		sortNames(TARGETFILE);
+		sortNames(seatingPlan);
 		return 1;
 	case 'd': // d) Assign a customer to a seat assignment
-		assignSeat(TARGETFILE);
+		assignSeat(seatingPlan);
 		return 1;
 	case 'e': // e) Delete a seat assignment
-		unassignSeat(TARGETFILE);
+		unassignSeat(seatingPlan);
 		return 1;
 	case 'f': // f) Quit
+		writeToFile(TARGETFILE, seatingPlan);
 		exit(0);
 	default: // A valid option is not given
 		printf("\ninvalid\n");
@@ -57,10 +53,10 @@ bool interfaceInput(char input[1], SEATASSIGNMENT* seatingPlan) {
 	}
 }
 
-int main(void) {
-	SEATASSIGNMENT* outList[12];
-	readInFile(TARGETFILE, outList);
 
+
+int main(void) {
+	SEATASSIGNMENT* seatingPlan = readInFile(TARGETFILE);
 	bool accepetedcommand = 1;
 	while (1) {
 		// Will only print interface after a valid command was given to prevent spamming the interface in console
@@ -74,7 +70,6 @@ int main(void) {
 		accepetedcommand = interfaceInput(input, seatingPlan);
 	}
 }
-
 // Function that will print an error if the target file can not be found
 void ioError(char* targetFile) {
 	fprintf(stderr, "Error, could not access source file for reading/writing: %s\n", targetFile);

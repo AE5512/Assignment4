@@ -1,4 +1,4 @@
 #pragma once
 #include <stdbool.h>
 
-bool sortNames(char* targetFile);
+bool sortNames(SEATASSIGNMENT* seating);

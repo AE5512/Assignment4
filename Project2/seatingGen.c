@@ -21,19 +21,13 @@ SEATASSIGNMENT createnewSeat(int seatNum) {
 	return newSeat;
 }
 
-bool generateSeatingPlan(char* targetFile) {
+bool generateSeatingPlan(char* targetFile, SEATASSIGNMENT* seating) {
 	//A new seating plan will be generated
-	printf("\nGenerating new seating plan\n");
-	FILE* dest = fopen(targetFile, "wb");
-	SEATASSIGNMENT seating[MAXSEATS];
-
+	printf("\nGenerating new blank seating plan\n");
 	for (int i = 0; i < MAXSEATS; ++i) {
-		printf("creating new seat num %d\n", i);
+		printf("creating new seat num %d\n", i+1);
 		seating[i] = createnewSeat(i);
-		fwrite(&seating[i], sizeof(SEATASSIGNMENT), 1, dest);
-
 	}
 	printf("\n");
-	fclose(dest);
 	return 1;
 }

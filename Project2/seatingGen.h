@@ -10,11 +10,9 @@ typedef struct seatAssignment {
 
 } SEATASSIGNMENT;
 
-SEATASSIGNMENT creatSeat(int seatNum);
+SEATASSIGNMENT createSeat(int seatNum);
 
-bool assignSeat(char* targetFile);
-
-bool generateSeatingPlan(char* targetFile);
+bool generateSeatingPlan(char* seating, SEATASSIGNMENT* seatingPlan);
 
 // A function to print if there is a read/write error. it got annoying to type over and over so it is a function now.
 void ioError(char* targetFile);

@@ -1,6 +1,8 @@
 #pragma once
 #include <stdbool.h>
 
-bool assignSeat(char* targetFile);// assignes a seat
+bool writeToFile(char* targetFile, SEATASSIGNMENT* seating); // write the seating plan to a file 
 
-bool unassignSeat(char* targetFile);// unassignes a seat
+bool assignSeat(SEATASSIGNMENT* seating);// assignes a seat
+
+bool unassignSeat(SEATASSIGNMENT* seating);// unassignes a seat

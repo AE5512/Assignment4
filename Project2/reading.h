@@ -1,8 +1,9 @@
 #pragma once
 #include <stdbool.h>
+#include "seatingGen.h"
 
-bool readInFile(TARGETFILE, SEATASSIGNMENT* outList);
+SEATASSIGNMENT* readInFile(char* targetFile);
 
-bool emptySeatsTotal(char* targetFile); // Total empty seats
+bool emptySeatsTotal(SEATASSIGNMENT* seating); // Total empty seats
 
 bool emptySeatsList(SEATASSIGNMENT* seating); // Each seat that is empty

@@ -5,23 +5,30 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #include "seatingGen.h"
 #include "reading.h"
 
 #define MAXSEATS 12
 
-// a function to assign a seat
-bool assignSeat(char* targetFile) {
-	FILE* source = fopen(targetFile, "rb");
-	SEATASSIGNMENT seating[MAXSEATS];
-	if (source == NULL) {
-		ioError(targetFile);
+// Writing the seating plan to a file
+bool writeToFile(char* targetFile, SEATASSIGNMENT* seating) {
+	FILE* dest = fopen(targetFile, "wb"); // Opens existing file
+	if (dest == NULL) {
+		generateSeatingPlan(targetFile, seating);
+		FILE* source = fopen(targetFile, "rb"); // Opens the newly created file
 		return 0;
 	}
 	for (int i = 0; i < MAXSEATS; ++i) {
-		fread(&seating[i], sizeof(SEATASSIGNMENT), 1, source); // Pulls the information for that seat
+		fwrite(&seating[i], sizeof(SEATASSIGNMENT), 1, dest); // Pulls the information for that seat
 	}
-	fclose(source);
+	free(seating);
+	return 1;
+}
+
+
+// a function to assign a seat
+bool assignSeat(SEATASSIGNMENT* seating) {
 	int seatNum = -1;
 	char firstName[40] = { 0 };
 	char lastName[40] = { 0 };
@@ -59,38 +66,16 @@ bool assignSeat(char* targetFile) {
 		printf("Operation canceled\n\n");
 		return 0;
 	}
-
 	// writes the new name over the blank space assigned to designated seat
 	strncpy_s(seating[(seatNum - 1)].firstName, 20, firstName, 40);
 	strncpy_s(seating[(seatNum - 1)].lastName, 20, lastName, 40);
 	seating[(seatNum - 1)].assigned = 1; // Sets the seat to assigned
-
-	// Write the change to file
-	FILE* dest = fopen(targetFile, "wb");
-	if (source == NULL) {
-		ioError(targetFile);
-		return 0;
-	}
-	for (int i = 0; i < MAXSEATS; ++i) {
-		fwrite(&seating[i], sizeof(SEATASSIGNMENT), 1, dest); // Pulls the information for that seat
-	}
-	fclose(dest);
-	printf("Seat assigned\n\n"); // Confirmation msg
+	printf("Seat assigned\n\n");
 	return 1;
 }
 
 // a function to unassign a seat
-bool unassignSeat(char* targetFile) {
-	FILE* source = fopen(targetFile, "rb");
-	SEATASSIGNMENT seating[MAXSEATS];
-	if (source == NULL) {
-		ioError(targetFile);
-		return 0;
-	}
-	for (int i = 0; i < MAXSEATS; ++i) {
-		fread(&seating[i], sizeof(SEATASSIGNMENT), 1, source); // Pulls the information for that seat
-	}
-	fclose(source);
+bool unassignSeat(SEATASSIGNMENT* seating) {
 	int seatNum = -1;
 	char firstName[40] = "*Empty";
 	char lastName[40] = "*Null";
@@ -130,18 +115,6 @@ bool unassignSeat(char* targetFile) {
 			strncpy_s(seating[(seatNum - 1)].lastName, 20, lastName, 40);
 			seating[(seatNum - 1)].assigned = 0; // Sets the seat to empty
 
-			// Write the change to file
-			FILE* dest = fopen(targetFile, "wb");
-			if (source == NULL) {
-				ioError(targetFile);
-				return 0;
-			}
-			for (int i = 0; i < MAXSEATS; ++i) {
-				fwrite(&seating[i], sizeof(SEATASSIGNMENT), 1, dest); // Pulls the information for that seat
-			}
-			fclose(dest);
-			printf("Seat unassigned\n\n"); // Confermation msg
-			return 1;
 		}
 	}
 }
